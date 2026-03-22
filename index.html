@@ -457,13 +457,143 @@ body::after {
 .footer strong { color:var(--text); }
 .footer a { color:var(--primary); text-decoration:none; }
 
-/* ── MOBILE ── */
+/* ── DASHBOARD SECTION ── */
+.dash-section {
+  grid-column: 1 / -1;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 56px 40px 60px;
+  position: relative;
+  z-index: 1;
+}
+.dash-inner { max-width: 1100px; margin: 0 auto; }
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  gap: 20px;
+}
+.dash-title-group {}
+.dash-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.dash-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.15;
+}
+.dash-title em { font-style: italic; color: var(--primary); }
+.dash-subtitle {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: 8px;
+  max-width: 480px;
+  line-height: 1.6;
+}
+.dash-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.kpi-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.kpi-card:hover { border-color: var(--primary); }
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  opacity: 0;
+  transition: opacity .2s;
+}
+.kpi-card:hover::before { opacity: 1; }
+.kpi-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-bottom: 8px; }
+.kpi-value { font-size: 30px; font-weight: 900; color: var(--primary); line-height: 1; margin-bottom: 4px; }
+.kpi-sub { font-size: 11px; color: var(--muted); }
+.kpi-trend { font-size: 11px; color: var(--green); font-weight: 600; margin-top: 6px; }
+
+.dash-frame-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+.dash-frame-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(15,31,53,.8);
+}
+.dash-frame-dots { display: flex; gap: 6px; }
+.dash-frame-dots span { width: 10px; height: 10px; border-radius: 50%; }
+.dot-red { background: #ef4444; }
+.dot-yellow { background: #f59e0b; }
+.dot-green { background: #10b981; }
+.dash-frame-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--muted);
+}
+.live-pill {
+  background: rgba(16,185,129,.1);
+  border: 1px solid rgba(16,185,129,.25);
+  color: var(--green);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+.dash-iframe {
+  width: 100%;
+  height: 580px;
+  border: none;
+  display: block;
+}
+.dash-caption {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.dash-caption strong { color: var(--text); }
+
 @media (max-width:768px) {
   .wrapper { grid-template-columns:1fr; grid-template-rows:auto 1fr auto; }
   .left { display:none; }
   .right { height:calc(100vh - 70px); position:relative; }
   .topbar { padding:14px 20px; }
   .footer { display:none; }
+  .dash-kpi-row { grid-template-columns: repeat(2,1fr); }
+  .dash-title { font-size: 24px; }
+  .dash-section { padding: 36px 20px; }
 }
 </style>
 </head>
@@ -482,6 +612,7 @@ body::after {
         <div class="live-dot"></div>
         Demo en vivo
       </div>
+      <a href="#dashboard" style="color:var(--muted);font-size:12px;font-weight:600;text-decoration:none;letter-spacing:.05em;transition:color .2s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">Ver Dashboard →</a>
       <a class="contact-btn" href="https://wa.me/51924200094?text=Hola Frank, quiero implementar el sistema en mi clínica">
         Quiero esto para mi clínica →
       </a>
@@ -602,11 +733,81 @@ body::after {
 
   </section>
 
+  <!-- ── DASHBOARD SECTION ── -->
+  <section class="dash-section" id="dashboard">
+    <div class="dash-inner">
+
+      <div class="dash-header">
+        <div class="dash-title-group">
+          <div class="dash-eyebrow">📊 Analítica estratégica</div>
+          <h2 class="dash-title">Lo que el dueño ve<br><em>cada mañana</em></h2>
+          <p class="dash-subtitle">Dashboard en tiempo real con los KPIs que importan: conversión, no-show, velocidad de respuesta y ticket promedio. Todo actualizado automáticamente desde el CRM.</p>
+        </div>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="dash-kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-label">Total leads</div>
+          <div class="kpi-value">50</div>
+          <div class="kpi-sub">registrados en el período</div>
+          <div class="kpi-trend">↑ capturados automáticamente</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Tasa de conversión</div>
+          <div class="kpi-value">54%</div>
+          <div class="kpi-sub">leads que agendaron cita</div>
+          <div class="kpi-trend">↑ vs 20–30% del sector</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">No-show identificado</div>
+          <div class="kpi-value">48%</div>
+          <div class="kpi-sub">citas agendadas sin asistir</div>
+          <div class="kpi-trend">Antes: dato invisible</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">SLA de respuesta</div>
+          <div class="kpi-value">4.5m</div>
+          <div class="kpi-sub">tiempo promedio de atención</div>
+          <div class="kpi-trend">↓ vs +4 horas sin sistema</div>
+        </div>
+      </div>
+
+      <!-- LOOKER STUDIO EMBED -->
+      <div class="dash-frame-wrap">
+        <div class="dash-frame-bar">
+          <div class="dash-frame-dots">
+            <span class="dot-red"></span>
+            <span class="dot-yellow"></span>
+            <span class="dot-green"></span>
+          </div>
+          <div class="dash-frame-label">
+            <span class="live-dot" style="width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse 1.5s infinite;display:inline-block"></span>
+            Dashboard MIG-EP · Looker Studio
+          </div>
+          <div class="live-pill">Live sync</div>
+        </div>
+        <iframe
+          class="dash-iframe"
+          src="https://lookerstudio.google.com/embed/reporting/81a4bc5e-2ab0-47ba-97df-958db6ec4bb4/page/9tlqF"
+          allowfullscreen
+        ></iframe>
+      </div>
+
+      <div class="dash-caption">
+        <strong>Este dashboard es exclusivo para el dueño de la clínica.</strong>
+        Cada cliente recibe su propio dashboard privado, conectado solo a sus datos.
+        Accesible desde cualquier dispositivo con su cuenta de Google.
+      </div>
+
+    </div>
+  </section>
+
   <!-- ── FOOTER ── -->
   <footer class="footer">
     <div class="footer-left">
       <span><strong>Frank Espinoza</strong> · +51 924 200 094</span>
-      <span>fespinoza@icloud.com</span>
+      <span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="741206151a1f3410111a00151813061b03001c1815165a171b19">[email&#160;protected]</a></span>
     </div>
     <div>
       <a href="https://wa.me/51924200094?text=Hola Frank, quiero implementar el sistema en mi clínica">
@@ -617,7 +818,7 @@ body::after {
 
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwniOlmxvYYUK1bw0Y5DNkPCaH_Us64rrYOpU7TYmqpngbtnRrLrrCOt9dIlWWj8e4Z/exec";
 
 const sessionId = "demo_" + Date.now() + "_" + Math.random().toString(36).substr(2,6);
@@ -694,12 +895,4 @@ document.getElementById('chatInput').addEventListener('keypress', e => {
 });
 
 // Mensaje inicial
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    addMsg('Hola 👋 Soy el asistente de Clínica Dental Lima.\n\n¿Cuál es tu nombre?', 'bot');
-    document.getElementById('chatInput').focus();
-  }, 600);
-});
-</script>
-</body>
-</html>
+window.addEvent
